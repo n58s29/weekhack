@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WeekHack — Organise ta semaine, hack ton énergie</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,800;1,9..144,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f1117;
+  --surface: #181b24;
+  --surface2: #1f2330;
+  --surface3: #272b38;
+  --border: #2a2e3b;
+  --text: #e8e6e1;
+  --text-dim: #8b8d95;
+  --text-muted: #5a5c65;
+  --accent: #f0a050;
+  --accent-glow: #f0a05033;
+  --pro: #5b8af5;
+  --pro-bg: #5b8af518;
+  --perso: #e06898;
+  --perso-bg: #e0689818;
+  --depl: #50c8a0;
+  --depl-bg: #50c8a018;
+  --energy-high: #50c8a0;
+  --energy-mid: #f0a050;
+  --energy-low: #e85858;
+  --radius: 12px;
+  --radius-sm: 8px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ═══ HEADER ═══ */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 28px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(20px);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-icon {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, var(--accent), #e06898);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--bg);
+  box-shadow: 0 4px 20px var(--accent-glow);
+}
+
+.logo-text {
+  font-family: 'Fraunces', serif;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+}
+
+.logo-text span { color: var(--accent); }
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header-date {
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+.btn-sync {
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1px solid var(--accent);
+  background: transparent;
+  color: var(--accent);
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.btn-sync:hover {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+.avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--pro), var(--perso));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: white;
+}
+
+/* ═══ LAYOUT ═══ */
+.app {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  min-height: calc(100vh - 69px);
+}
+
+/* ═══ MAIN ═══ */
+.main {
+  padding: 24px 28px;
+  overflow-y: auto;
+}
+
+/* ═══ ENERGY BAR ═══ */
+.energy-strip {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 24px;
+  padding: 16px 20px;
+  background: var(--surface);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+}
+
+.energy-day {
+  flex: 1;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.energy-day:hover { transform: translateY(-2px); }
+
+.energy-day .day-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.energy-bar-track {
+  width: 100%;
+  height: 48px;
+  background: var(--surface2);
+  border-radius: 6px;
+  position: relative;
+  overflow: hidden;
+}
+
+.energy-bar-fill {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border-radius: 6px;
+  transition: height 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.4s;
+}
+
+.energy-value {
+  font-size: 12px;
+  font-weight: 500;
+  margin-top: 6px;
+  color: var(--text-dim);
+}
+
+.energy-label {
+  font-size: 11px;
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ═══ WEEK GRID ═══ */
+.week-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.week-title {
+  font-family: 'Fraunces', serif;
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+}
+
+.week-nav {
+  display: flex;
+  gap: 8px;
+}
+
+.week-nav button {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-dim);
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.week-nav button:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.legend {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+.legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.week-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+
+.day-col {
+  background: var(--surface);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  min-height: 380px;
+  overflow: hidden;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.day-col:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 30px var(--accent-glow);
+}
+
+.day-col.today {
+  border-color: var(--accent);
+  box-shadow: 0 0 30px var(--accent-glow);
+}
+
+.day-col-header {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+
+.day-col-header .dow {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-muted);
+}
+
+.day-col-header .date-num {
+  font-family: 'Fraunces', serif;
+  font-size: 24px;
+  font-weight: 700;
+  margin-top: 2px;
+}
+
+.today .day-col-header .date-num {
+  color: var(--accent);
+}
+
+.today-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.5); }
+}
+
+.day-events {
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.event-block {
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.event-block::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+}
+
+.event-block:hover {
+  transform: scale(1.03);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+}
+
+.event-block.pro {
+  background: var(--pro-bg);
+  border: 1px solid #5b8af530;
+}
+.event-block.pro::before { background: var(--pro); }
+
+.event-block.perso {
+  background: var(--perso-bg);
+  border: 1px solid #e0689830;
+}
+.event-block.perso::before { background: var(--perso); }
+
+.event-block.depl {
+  background: var(--depl-bg);
+  border: 1px solid #50c8a030;
+}
+.event-block.depl::before { background: var(--depl); }
+
+.event-time {
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-bottom: 3px;
+  font-weight: 500;
+}
+
+.event-title {
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.event-loc {
+  font-size: 10px;
+  color: var(--text-dim);
+  margin-top: 3px;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+/* ═══ SIDEBAR ═══ */
+.sidebar {
+  border-left: 1px solid var(--border);
+  background: var(--surface);
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  overflow-y: auto;
+}
+
+.sidebar-section-title {
+  font-family: 'Fraunces', serif;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ═══ TODAY FOCUS ═══ */
+.focus-card {
+  background: var(--surface2);
+  border-radius: var(--radius);
+  padding: 16px;
+  border: 1px solid var(--border);
+}
+
+.focus-time {
+  font-size: 40px;
+  font-family: 'Fraunces', serif;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--accent), #e06898);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1;
+}
+
+.focus-subtitle {
+  font-size: 13px;
+  color: var(--text-dim);
+  margin-top: 4px;
+  margin-bottom: 16px;
+}
+
+.focus-metrics {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.metric {
+  background: var(--surface3);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  text-align: center;
+}
+
+.metric-val {
+  font-size: 20px;
+  font-weight: 700;
+  font-family: 'Fraunces', serif;
+}
+
+.metric-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.metric-val.pro-c { color: var(--pro); }
+.metric-val.perso-c { color: var(--perso); }
+.metric-val.depl-c { color: var(--depl); }
+.metric-val.energy-c { color: var(--energy-high); }
+
+/* ═══ TODO ═══ */
+.todo-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.todo-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--surface2);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid transparent;
+}
+
+.todo-item:hover {
+  border-color: var(--border);
+  background: var(--surface3);
+}
+
+.todo-check {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid var(--text-muted);
+  flex-shrink: 0;
+  margin-top: 1px;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.todo-item.done .todo-check {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.todo-item.done .todo-check::after {
+  content: '✓';
+  font-size: 11px;
+  color: var(--bg);
+  font-weight: 700;
+}
+
+.todo-item.done .todo-text {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+
+.todo-text {
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.todo-tag {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-top: 4px;
+  display: inline-block;
+}
+
+.todo-tag.urgent {
+  background: #e8585825;
+  color: #e85858;
+}
+
+.todo-tag.normal {
+  background: #5b8af520;
+  color: var(--pro);
+}
+
+.todo-tag.perso-t {
+  background: #e0689820;
+  color: var(--perso);
+}
+
+/* ═══ SUGGESTIONS ═══ */
+.suggestions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.suggestion {
+  display: flex;
+  gap: 10px;
+  padding: 12px;
+  background: linear-gradient(135deg, var(--accent-glow), transparent);
+  border: 1px solid #f0a05030;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.suggestion:hover {
+  background: linear-gradient(135deg, #f0a05020, transparent);
+  border-color: var(--accent);
+}
+
+.suggestion-icon {
+  font-size: 18px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.suggestion-text {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text-dim);
+}
+
+.suggestion-text strong {
+  color: var(--accent);
+  display: block;
+  font-size: 13px;
+  margin-bottom: 2px;
+}
+
+/* ═══ COMMUTE STRIP ═══ */
+.commute-strip {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.commute-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--surface2);
+  border-radius: var(--radius-sm);
+}
+
+.commute-icon { font-size: 16px; }
+.commute-info { flex: 1; }
+
+.commute-route {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.commute-detail {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.commute-time {
+  font-size: 14px;
+  font-weight: 700;
+  font-family: 'Fraunces', serif;
+  color: var(--depl);
+}
+
+/* ═══ MODAL ═══ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(8px);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.modal {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 32px;
+  width: 90%;
+  max-width: 440px;
+  transform: translateY(20px);
+  transition: transform 0.3s;
+}
+
+.modal-overlay.active .modal {
+  transform: translateY(0);
+}
+
+.modal h2 {
+  font-family: 'Fraunces', serif;
+  font-size: 22px;
+  margin-bottom: 20px;
+}
+
+.modal-event-details {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modal-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+}
+
+.modal-row .label {
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.modal-close {
+  margin-top: 20px;
+  width: 100%;
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.modal-close:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ═══ ANIMATIONS ═══ */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.day-col {
+  animation: slideUp 0.5s ease both;
+}
+.day-col:nth-child(1) { animation-delay: 0.05s; }
+.day-col:nth-child(2) { animation-delay: 0.1s; }
+.day-col:nth-child(3) { animation-delay: 0.15s; }
+.day-col:nth-child(4) { animation-delay: 0.2s; }
+.day-col:nth-child(5) { animation-delay: 0.25s; }
+.day-col:nth-child(6) { animation-delay: 0.3s; }
+.day-col:nth-child(7) { animation-delay: 0.35s; }
+
+.sidebar > * {
+  animation: slideUp 0.5s ease both;
+}
+.sidebar > *:nth-child(1) { animation-delay: 0.2s; }
+.sidebar > *:nth-child(2) { animation-delay: 0.3s; }
+.sidebar > *:nth-child(3) { animation-delay: 0.4s; }
+.sidebar > *:nth-child(4) { animation-delay: 0.5s; }
+
+/* ═══ RESPONSIVE ═══ */
+@media (max-width: 1200px) {
+  .app {
+    grid-template-columns: 1fr;
+  }
+  .sidebar {
+    border-left: none;
+    border-top: 1px solid var(--border);
+  }
+  .week-grid {
+    grid-template-columns: repeat(7, 1fr);
+    overflow-x: auto;
+  }
+  .day-col { min-width: 140px; }
+}
+
+@media (max-width: 768px) {
+  .header { padding: 12px 16px; }
+  .main { padding: 16px; }
+  .week-grid {
+    grid-template-columns: repeat(7, 1fr);
+    overflow-x: auto;
+    padding-bottom: 8px;
+  }
+  .day-col { min-width: 130px; }
+  .energy-strip { overflow-x: auto; }
+  .energy-day { min-width: 50px; }
+  .header-date { display: none; }
+}
+
+/* ═══ HACK BADGE ═══ */
+.hack-badge {
+  position: fixed;
+  bottom: 16px;
+  left: 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 8px 16px;
+  font-size: 12px;
+  color: var(--text-dim);
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hack-badge span {
+  font-family: 'Fraunces', serif;
+  font-weight: 700;
+  color: var(--accent);
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="logo">
+    <div class="logo-icon">W</div>
+    <div class="logo-text">Week<span>Hack</span></div>
+  </div>
+  <div class="header-right">
+    <div class="header-date">Semaine 12 — Mars 2026</div>
+    <button class="btn-sync" onclick="simulateSync()">
+      <span>↻</span> Sync Outlook
+    </button>
+    <div class="avatar">BK</div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal" onclick="closeModal(event)">
+  <div class="modal">
+    <h2 id="modal-title">Détail événement</h2>
+    <div class="modal-event-details" id="modal-body"></div>
+    <button class="modal-close" onclick="document.getElementById('modal').classList.remove('active')">Fermer</button>
+  </div>
+</div>
+
+<!-- APP -->
+<div class="app">
+
+  <!-- MAIN CONTENT -->
+  <div class="main">
+
+    <!-- ENERGY STRIP -->
+    <div class="energy-label">⚡ Énergie prévisionnelle de la semaine</div>
+    <div class="energy-strip" id="energyStrip"></div>
+
+    <!-- WEEK HEADER -->
+    <div class="week-header">
+      <div class="week-title">Ma semaine</div>
+      <div style="display:flex;align-items:center;gap:16px;">
+        <div class="legend">
+          <div class="legend-item"><div class="legend-dot" style="background:var(--pro)"></div> Pro</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--perso)"></div> Perso</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--depl)"></div> Déplacement</div>
+        </div>
+        <div class="week-nav">
+          <button>‹</button>
+          <button>›</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- WEEK GRID -->
+    <div class="week-grid" id="weekGrid"></div>
+  </div>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+
+    <!-- TODAY FOCUS -->
+    <div>
+      <div class="sidebar-section-title">📊 Lundi en un coup d'œil</div>
+      <div class="focus-card">
+        <div class="focus-time">8h30</div>
+        <div class="focus-subtitle">de disponible sur 10h de travail</div>
+        <div class="focus-metrics">
+          <div class="metric">
+            <div class="metric-val pro-c">5</div>
+            <div class="metric-label">Réunions pro</div>
+          </div>
+          <div class="metric">
+            <div class="metric-val perso-c">2</div>
+            <div class="metric-label">Perso</div>
+          </div>
+          <div class="metric">
+            <div class="metric-val depl-c">1h20</div>
+            <div class="metric-label">Trajets</div>
+          </div>
+          <div class="metric">
+            <div class="metric-val energy-c">72%</div>
+            <div class="metric-label">Énergie</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COMMUTES -->
+    <div>
+      <div class="sidebar-section-title">🚆 Déplacements du jour</div>
+      <div class="commute-strip">
+        <div class="commute-row">
+          <div class="commute-icon">🏠</div>
+          <div class="commute-info">
+            <div class="commute-route">Maison → 574 Nantes</div>
+            <div class="commute-detail">Tram L1 + 8 min à pied</div>
+          </div>
+          <div class="commute-time">38 min</div>
+        </div>
+        <div class="commute-row">
+          <div class="commute-icon">🏢</div>
+          <div class="commute-info">
+            <div class="commute-route">574 → École Agenêts</div>
+            <div class="commute-detail">Vélo — 12 min</div>
+          </div>
+          <div class="commute-time">12 min</div>
+        </div>
+        <div class="commute-row">
+          <div class="commute-icon">🎒</div>
+          <div class="commute-info">
+            <div class="commute-route">École → Maison</div>
+            <div class="commute-detail">À pied avec les enfants</div>
+          </div>
+          <div class="commute-time">18 min</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TO-DO -->
+    <div>
+      <div class="sidebar-section-title">✅ À traiter cette semaine</div>
+      <div class="todo-list" id="todoList"></div>
+    </div>
+
+    <!-- SUGGESTIONS IA -->
+    <div>
+      <div class="sidebar-section-title">💡 Suggestions WeekHack</div>
+      <div class="suggestions">
+        <div class="suggestion" onclick="applySuggestion(this)">
+          <div class="suggestion-icon">🔄</div>
+          <div class="suggestion-text">
+            <strong>Déplacer le 1-1 de mercredi</strong>
+            Ta réunion de 14h tombe dans ton creux d'énergie. Déplace-la à 10h30 quand tu es au top ?
+          </div>
+        </div>
+        <div class="suggestion" onclick="applySuggestion(this)">
+          <div class="suggestion-icon">🛡️</div>
+          <div class="suggestion-text">
+            <strong>Bloquer du focus time</strong>
+            Mardi matin est libre. Idéal pour avancer sur le dossier CadrageExpress v4.
+          </div>
+        </div>
+        <div class="suggestion" onclick="applySuggestion(this)">
+          <div class="suggestion-icon">🏃</div>
+          <div class="suggestion-text">
+            <strong>Caler ta sortie running</strong>
+            Jeudi soir est light. Place ta séance de fractionné à 18h30 ?
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- HACK BADGE -->
+<div class="hack-badge">
+  🎙️ <span>(Cr)Hack!</span> — Concept par Benjamin
+</div>
+
+<script>
+// ═══════════════════════════════════
+// DATA
+// ═══════════════════════════════════
+
+const DAYS = [
+  { dow: 'Lun', date: 9, energy: 72, today: true },
+  { dow: 'Mar', date: 10, energy: 85 },
+  { dow: 'Mer', date: 11, energy: 45 },
+  { dow: 'Jeu', date: 12, energy: 68 },
+  { dow: 'Ven', date: 13, energy: 55 },
+  { dow: 'Sam', date: 14, energy: 90 },
+  { dow: 'Dim', date: 15, energy: 80 }
+];
+
+const EVENTS = {
+  9: [
+    { time: '8:30', title: 'Stand-up équipe Innovation', type: 'pro', loc: 'Teams' },
+    { time: '9:30', title: 'Atelier IA — HandiCap\'Anjou', type: 'pro', loc: '574 Nantes' },
+    { time: '12:00', title: 'Déj avec Julien', type: 'perso' },
+    { time: '14:00', title: 'COPIL CadrageExpress v4', type: 'pro', loc: 'Salle Verne' },
+    { time: '16:30', title: 'Récup enfants école', type: 'perso', loc: 'École Agenêts' },
+  ],
+  10: [
+    { time: '9:00', title: 'Focus time — Dossier Palmes', type: 'pro', loc: 'Bureau' },
+    { time: '11:00', title: 'Call startup — LogiTrack', type: 'pro', loc: 'Teams' },
+    { time: '14:00', title: 'Mercred\'inno — Rédaction post LinkedIn', type: 'pro' },
+    { time: '17:00', title: 'Courses Chronodrive', type: 'perso' },
+  ],
+  11: [
+    { time: '8:30', title: '🚆 Déplacement Rennes', type: 'depl', loc: 'TER 1h15' },
+    { time: '10:30', title: 'Imagine Summit — Suivi projets', type: 'pro', loc: 'Rennes' },
+    { time: '14:00', title: '1-1 avec Manager', type: 'pro', loc: 'Teams' },
+    { time: '16:30', title: '🚆 Retour Nantes', type: 'depl', loc: 'TER 1h15' },
+    { time: '19:00', title: 'Soirée crêpes maison', type: 'perso' },
+  ],
+  12: [
+    { time: '9:00', title: 'Revue Power BI — Blottereau', type: 'pro', loc: '574 Nantes' },
+    { time: '10:30', title: '57\'40 — Keynote interne', type: 'pro', loc: '574 Nantes' },
+    { time: '13:00', title: 'Pause — Run 40 min (récup)', type: 'perso', loc: 'Bords d\'Erdre' },
+    { time: '15:00', title: 'Enregistrement (Cr)Hack! #7', type: 'pro', loc: 'Studio' },
+    { time: '18:30', title: 'Fractionné 10×400m', type: 'perso', loc: 'Stade Mangin' },
+  ],
+  13: [
+    { time: '9:00', title: 'Sprint review — Projets inno', type: 'pro', loc: 'Teams' },
+    { time: '11:00', title: 'Démo EthiQuête au DSI', type: 'pro', loc: '574 Nantes' },
+    { time: '14:00', title: 'Rétrospective équipe', type: 'pro', loc: 'Salle Nemo' },
+    { time: '17:30', title: 'Apéro équipe', type: 'perso', loc: 'Le Lieu Unique' },
+  ],
+  14: [
+    { time: '8:30', title: 'Parkrun — 5 km', type: 'perso', loc: 'Parc de Procé' },
+    { time: '10:00', title: 'Marché Talensac', type: 'perso' },
+    { time: '14:00', title: 'Bricolage maison', type: 'perso' },
+    { time: '18:00', title: 'Dîner amis — Pizza maison', type: 'perso' },
+  ],
+  15: [
+    { time: '9:00', title: 'Grasse matinée ☕', type: 'perso' },
+    { time: '11:00', title: 'Sortie famille — Machines de l\'île', type: 'perso', loc: 'Île de Nantes' },
+    { time: '15:00', title: 'Prépa semaine prochaine', type: 'pro' },
+    { time: '17:00', title: 'Running long — 1h30', type: 'perso', loc: 'Bords de Loire' },
+  ]
+};
+
+const TODOS = [
+  { text: 'Finaliser slides Palmes du Sport (MEDEF)', tag: 'urgent', done: false },
+  { text: 'Relire brief TC\'Auto NG pour jeudi', tag: 'normal', done: false },
+  { text: 'Répondre mail RPE — conseil d\'école', tag: 'perso', done: false },
+  { text: 'Publier post Mercred\'inno sur LinkedIn', tag: 'normal', done: false },
+  { text: 'Commander dossards Challenge Connecté', tag: 'perso', done: true },
+  { text: 'Mettre à jour README EthiQuête', tag: 'normal', done: false },
+];
+
+// ═══════════════════════════════════
+// RENDER
+// ═══════════════════════════════════
+
+function getEnergyColor(val) {
+  if (val >= 70) return 'var(--energy-high)';
+  if (val >= 50) return 'var(--energy-mid)';
+  return 'var(--energy-low)';
+}
+
+function renderEnergyStrip() {
+  const strip = document.getElementById('energyStrip');
+  strip.innerHTML = DAYS.map(d => `
+    <div class="energy-day" onclick="showEnergyTip(${d.energy}, '${d.dow}')">
+      <div class="day-label">${d.dow}</div>
+      <div class="energy-bar-track">
+        <div class="energy-bar-fill" style="height:${d.energy}%;background:${getEnergyColor(d.energy)};opacity:0.85;"></div>
+      </div>
+      <div class="energy-value">${d.energy}%</div>
+    </div>
+  `).join('');
+}
+
+function renderWeekGrid() {
+  const grid = document.getElementById('weekGrid');
+  grid.innerHTML = DAYS.map(d => {
+    const events = EVENTS[d.date] || [];
+    return `
+      <div class="day-col ${d.today ? 'today' : ''}">
+        <div class="day-col-header">
+          <div class="dow">${d.dow}</div>
+          <div class="date-num">${d.date}</div>
+          ${d.today ? '<div class="today-badge"></div>' : ''}
+        </div>
+        <div class="day-events">
+          ${events.map(e => `
+            <div class="event-block ${e.type}" onclick="showEventModal('${e.time}', '${e.title.replace(/'/g, "\\'")}', '${e.type}', '${(e.loc||'').replace(/'/g, "\\'")}', '${d.dow} ${d.date} mars')">
+              <div class="event-time">${e.time}</div>
+              <div class="event-title">${e.title}</div>
+              ${e.loc ? `<div class="event-loc">📍 ${e.loc}</div>` : ''}
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderTodos() {
+  const list = document.getElementById('todoList');
+  list.innerHTML = TODOS.map((t, i) => {
+    const tagClass = t.tag === 'urgent' ? 'urgent' : t.tag === 'perso' ? 'perso-t' : 'normal';
+    const tagLabel = t.tag === 'urgent' ? '🔴 Urgent' : t.tag === 'perso' ? '🏠 Perso' : '💼 Pro';
+    return `
+      <div class="todo-item ${t.done ? 'done' : ''}" onclick="toggleTodo(${i})">
+        <div class="todo-check"></div>
+        <div>
+          <div class="todo-text">${t.text}</div>
+          <div class="todo-tag ${tagClass}">${tagLabel}</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// ═══════════════════════════════════
+// INTERACTIONS
+// ═══════════════════════════════════
+
+function toggleTodo(i) {
+  TODOS[i].done = !TODOS[i].done;
+  renderTodos();
+}
+
+function showEventModal(time, title, type, loc, day) {
+  const typeLabels = { pro: '💼 Professionnel', perso: '🏠 Personnel', depl: '🚆 Déplacement' };
+  const modal = document.getElementById('modal');
+  document.getElementById('modal-title').textContent = title;
+  document.getElementById('modal-body').innerHTML = `
+    <div class="modal-row"><span class="label">Jour</span><span>${day}</span></div>
+    <div class="modal-row"><span class="label">Heure</span><span>${time}</span></div>
+    <div class="modal-row"><span class="label">Type</span><span>${typeLabels[type] || type}</span></div>
+    ${loc ? `<div class="modal-row"><span class="label">Lieu</span><span>📍 ${loc}</span></div>` : ''}
+  `;
+  modal.classList.add('active');
+}
+
+function closeModal(e) {
+  if (e.target.classList.contains('modal-overlay')) {
+    e.target.classList.remove('active');
+  }
+}
+
+function showEnergyTip(val, day) {
+  let msg;
+  if (val >= 70) msg = `${day} : énergie haute (${val}%) — idéal pour les tâches complexes !`;
+  else if (val >= 50) msg = `${day} : énergie moyenne (${val}%) — planifie des tâches légères.`;
+  else msg = `${day} : énergie basse (${val}%) — évite les réunions importantes.`;
+
+  const modal = document.getElementById('modal');
+  document.getElementById('modal-title').textContent = '⚡ Niveau d\'énergie';
+  document.getElementById('modal-body').innerHTML = `
+    <div style="text-align:center;padding:16px 0;">
+      <div style="font-size:48px;font-family:'Fraunces',serif;font-weight:800;color:${getEnergyColor(val)}">${val}%</div>
+      <div style="color:var(--text-dim);margin-top:8px;font-size:14px;">${msg}</div>
+    </div>
+  `;
+  modal.classList.add('active');
+}
+
+function simulateSync() {
+  const btn = document.querySelector('.btn-sync');
+  btn.innerHTML = '<span style="animation:spin 1s linear infinite;display:inline-block">↻</span> Syncing...';
+  btn.style.pointerEvents = 'none';
+  setTimeout(() => {
+    btn.innerHTML = '<span>✓</span> Synchronisé !';
+    btn.style.borderColor = 'var(--energy-high)';
+    btn.style.color = 'var(--energy-high)';
+    setTimeout(() => {
+      btn.innerHTML = '<span>↻</span> Sync Outlook';
+      btn.style.borderColor = '';
+      btn.style.color = '';
+      btn.style.pointerEvents = '';
+    }, 2000);
+  }, 1500);
+}
+
+function applySuggestion(el) {
+  el.style.borderColor = 'var(--energy-high)';
+  el.style.background = 'linear-gradient(135deg, #50c8a020, transparent)';
+  el.querySelector('.suggestion-text strong').style.color = 'var(--energy-high)';
+  el.querySelector('.suggestion-text strong').textContent = '✓ Appliqué !';
+  el.style.pointerEvents = 'none';
+}
+
+// ═══ INIT ═══
+renderEnergyStrip();
+renderWeekGrid();
+renderTodos();
+
+// Add spin keyframe
+const style = document.createElement('style');
+style.textContent = '@keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }';
+document.head.appendChild(style);
+</script>
+</body>
+</html>
