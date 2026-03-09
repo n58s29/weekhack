@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WeekHack — Ma semaine, en douceur</title>
+<title>WeekHack — Ton point du dimanche soir</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -17,13 +17,10 @@
   --text-muted: #b0a898;
   --pro: #6a9fd8;
   --pro-light: #e8f0fa;
-  --pro-border: #c8ddf0;
   --perso: #e88fa0;
   --perso-light: #fce8ec;
-  --perso-border: #f0c8d0;
   --depl: #6bc4a0;
   --depl-light: #e4f6ee;
-  --depl-border: #b8e4d0;
   --accent: #e8985a;
   --accent-light: #fef3e8;
   --accent-border: #f0d8b8;
@@ -32,8 +29,7 @@
   --energy-low: #e07878;
   --radius: 16px;
   --radius-sm: 12px;
-  --shadow: 0 2px 12px rgba(58, 53, 48, 0.06);
-  --shadow-hover: 0 4px 20px rgba(58, 53, 48, 0.1);
+  --shadow: 0 2px 12px rgba(58,53,48,0.06);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -43,95 +39,20 @@ body {
   background: var(--bg);
   color: var(--text);
   min-height: 100vh;
-  -webkit-font-smoothing: antialiased;
-}
-
-/* ═══ ONBOARDING OVERLAY ═══ */
-.onboarding {
-  position: fixed;
-  inset: 0;
-  background: var(--bg);
-  z-index: 500;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 32px;
-  transition: opacity 0.6s, transform 0.6s;
 }
 
-.onboarding.hidden {
-  opacity: 0;
-  pointer-events: none;
-  transform: scale(1.02);
-}
-
-.onboarding-emoji {
-  font-size: 64px;
-  margin-bottom: 24px;
-  animation: wave 2s ease-in-out infinite;
-}
-
-@keyframes wave {
-  0%, 100% { transform: rotate(0deg); }
-  25% { transform: rotate(12deg); }
-  75% { transform: rotate(-8deg); }
-}
-
-.onboarding h1 {
-  font-family: 'Caveat', cursive;
-  font-size: 42px;
-  font-weight: 700;
-  color: var(--text);
-  margin-bottom: 8px;
-}
-
-.onboarding h1 span { color: var(--accent); }
-
-.onboarding p {
-  font-size: 17px;
-  color: var(--text-soft);
-  max-width: 380px;
-  line-height: 1.6;
-  margin-bottom: 32px;
-}
-
-.btn-start {
-  padding: 16px 40px;
-  border-radius: 50px;
-  border: none;
-  background: var(--accent);
-  color: white;
-  font-family: inherit;
-  font-size: 16px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s;
-  box-shadow: 0 4px 20px rgba(232, 152, 90, 0.3);
-}
-
-.btn-start:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 28px rgba(232, 152, 90, 0.4);
-}
-
-.onboarding-note {
-  margin-top: 16px;
-  font-size: 13px;
-  color: var(--text-muted);
-  font-style: italic;
-}
-
-/* ═══ HEADER ═══ */
-.header {
+/* ═══ TOP BAR ═══ */
+.topbar {
+  width: 100%;
+  padding: 14px 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 28px;
   background: var(--surface);
   border-bottom: 1px solid var(--border-light);
-  box-shadow: 0 1px 8px rgba(58,53,48,0.04);
   position: sticky;
   top: 0;
   z-index: 100;
@@ -140,609 +61,612 @@ body {
 .logo {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
-.logo-icon {
-  font-size: 28px;
-}
+.logo-emoji { font-size: 22px; }
 
 .logo-text {
   font-family: 'Caveat', cursive;
-  font-size: 26px;
+  font-size: 24px;
   font-weight: 700;
 }
 
 .logo-text span { color: var(--accent); }
 
-.header-right {
+.timer-pill {
   display: flex;
   align-items: center;
-  gap: 14px;
-}
-
-.header-greeting {
-  font-size: 14px;
-  color: var(--text-soft);
-}
-
-.header-greeting strong {
-  color: var(--text);
-}
-
-.avatar {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  background: var(--accent-light);
-  border: 2px solid var(--accent-border);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-}
-
-/* ═══ MAIN LAYOUT ═══ */
-.app-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 24px;
-}
-
-/* ═══ MOOD CARD ═══ */
-.mood-card {
-  background: var(--surface);
-  border-radius: var(--radius);
-  padding: 24px 28px;
-  margin-bottom: 20px;
-  border: 1px solid var(--border-light);
-  box-shadow: var(--shadow);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-
-.mood-left h2 {
-  font-family: 'Caveat', cursive;
-  font-size: 28px;
-  font-weight: 700;
-  margin-bottom: 4px;
-}
-
-.mood-left p {
-  font-size: 14px;
-  color: var(--text-soft);
-  line-height: 1.5;
-}
-
-.mood-energy {
-  display: flex;
-  align-items: center;
-  gap: 16px;
+  gap: 8px;
   background: var(--accent-light);
   border: 1px solid var(--accent-border);
   border-radius: 50px;
-  padding: 10px 20px;
-}
-
-.mood-battery {
-  width: 48px;
-  height: 24px;
-  border-radius: 6px;
-  border: 2px solid var(--accent);
-  position: relative;
-  overflow: hidden;
-}
-
-.mood-battery::after {
-  content: '';
-  position: absolute;
-  right: -6px;
-  top: 6px;
-  width: 4px;
-  height: 10px;
-  background: var(--accent);
-  border-radius: 0 2px 2px 0;
-}
-
-.mood-battery-fill {
-  height: 100%;
-  border-radius: 3px;
-  transition: width 0.8s ease;
-}
-
-.mood-battery-text {
-  font-size: 14px;
+  padding: 6px 16px;
+  font-size: 13px;
   font-weight: 700;
   color: var(--accent);
 }
 
-/* ═══ ENERGY BUBBLES ═══ */
-.energy-section {
-  margin-bottom: 20px;
+.timer-pill .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: blink 1.5s infinite;
 }
 
-.section-label {
-  font-family: 'Caveat', cursive;
-  font-size: 20px;
-  font-weight: 600;
-  margin-bottom: 12px;
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* ═══ PROGRESS BAR ═══ */
+.progress-wrap {
+  width: 100%;
+  padding: 0 24px;
+  margin-top: 16px;
+  max-width: 640px;
+}
+
+.progress-steps {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
+  margin-bottom: 6px;
 }
 
-.energy-bubbles {
-  display: flex;
-  gap: 10px;
-  background: var(--surface);
-  border-radius: var(--radius);
-  padding: 20px;
-  border: 1px solid var(--border-light);
-  box-shadow: var(--shadow);
-}
-
-.energy-bubble {
+.progress-step {
   flex: 1;
-  text-align: center;
-  cursor: pointer;
-  transition: transform 0.2s;
-  padding: 8px;
-  border-radius: var(--radius-sm);
-}
-
-.energy-bubble:hover {
-  transform: translateY(-3px);
-  background: var(--bg-warm);
-}
-
-.energy-bubble.active {
-  background: var(--accent-light);
-}
-
-.bubble-day {
-  font-size: 12px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: var(--text-muted);
-  margin-bottom: 10px;
-}
-
-.bubble-circle {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  margin: 0 auto 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  font-weight: 800;
-  color: white;
-  transition: transform 0.3s;
-  position: relative;
-}
-
-.bubble-face {
-  font-size: 22px;
-  margin-top: 4px;
-}
-
-.bubble-date {
-  font-size: 13px;
-  color: var(--text-soft);
-  font-weight: 600;
-}
-
-.today-dot {
-  display: inline-block;
-  width: 5px;
   height: 5px;
-  background: var(--accent);
-  border-radius: 50%;
-  margin-left: 4px;
-  vertical-align: middle;
+  border-radius: 3px;
+  background: var(--border);
+  transition: background 0.5s;
 }
 
-/* ═══ WEEK COLUMNS ═══ */
-.week-section {
-  display: grid;
-  grid-template-columns: 1fr 340px;
-  gap: 20px;
-  margin-bottom: 24px;
+.progress-step.done { background: var(--accent); }
+.progress-step.active { background: var(--accent); animation: progressPulse 1.5s infinite; }
+
+@keyframes progressPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
 }
 
-.week-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 8px;
-}
-
-.day-card {
-  background: var(--surface);
-  border-radius: var(--radius);
-  border: 1px solid var(--border-light);
-  box-shadow: var(--shadow);
-  overflow: hidden;
-  min-height: 320px;
-  transition: all 0.3s;
-  animation: popIn 0.4s ease both;
-}
-
-.day-card:nth-child(1) { animation-delay: 0.05s; }
-.day-card:nth-child(2) { animation-delay: 0.1s; }
-.day-card:nth-child(3) { animation-delay: 0.15s; }
-.day-card:nth-child(4) { animation-delay: 0.2s; }
-.day-card:nth-child(5) { animation-delay: 0.25s; }
-.day-card:nth-child(6) { animation-delay: 0.3s; }
-.day-card:nth-child(7) { animation-delay: 0.35s; }
-
-@keyframes popIn {
-  from { opacity: 0; transform: translateY(12px) scale(0.97); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-.day-card:hover {
-  box-shadow: var(--shadow-hover);
-  transform: translateY(-2px);
-}
-
-.day-card.today {
-  border-color: var(--accent);
-  box-shadow: 0 3px 16px rgba(232, 152, 90, 0.15);
-}
-
-.day-card-head {
-  padding: 12px 10px;
-  text-align: center;
-  background: var(--bg);
-  border-bottom: 1px solid var(--border-light);
-}
-
-.day-card.today .day-card-head {
-  background: var(--accent-light);
-}
-
-.day-card-head .dow {
+.progress-label {
+  display: flex;
+  justify-content: space-between;
   font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
   color: var(--text-muted);
-}
-
-.day-card.today .day-card-head .dow { color: var(--accent); }
-
-.day-card-head .num {
-  font-family: 'Caveat', cursive;
-  font-size: 28px;
-  font-weight: 700;
-  line-height: 1.1;
-}
-
-.day-card.today .day-card-head .num { color: var(--accent); }
-
-.day-events {
-  padding: 8px 6px;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.ev {
-  padding: 7px 9px;
-  border-radius: 10px;
-  font-size: 11.5px;
-  cursor: pointer;
-  transition: all 0.2s;
-  border-left: 3px solid;
-  line-height: 1.35;
-}
-
-.ev:hover {
-  transform: scale(1.03);
-  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-}
-
-.ev.pro { background: var(--pro-light); border-color: var(--pro); }
-.ev.perso { background: var(--perso-light); border-color: var(--perso); }
-.ev.depl { background: var(--depl-light); border-color: var(--depl); }
-
-.ev-time {
-  font-size: 10px;
-  font-weight: 700;
-  color: var(--text-muted);
-}
-
-.ev-name {
   font-weight: 600;
-  color: var(--text);
-  margin-top: 1px;
 }
 
-.ev-loc {
-  font-size: 10px;
+/* ═══ CONTAINER ═══ */
+.container {
+  width: 100%;
+  max-width: 640px;
+  padding: 24px;
+  flex: 1;
+}
+
+/* ═══ STEP CARD ═══ */
+.step {
+  display: none;
+  animation: fadeUp 0.5s ease;
+}
+
+.step.active { display: block; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.step-header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.step-emoji {
+  font-size: 48px;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.step-title {
+  font-family: 'Caveat', cursive;
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.step-subtitle {
+  font-size: 15px;
   color: var(--text-soft);
-  margin-top: 2px;
+  line-height: 1.6;
+  max-width: 440px;
+  margin: 0 auto;
 }
 
-/* ═══ SIDEBAR RIGHT ═══ */
-.sidebar {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.side-card {
+/* ═══ BRAIN DUMP ═══ */
+.brain-dump {
   background: var(--surface);
   border-radius: var(--radius);
   border: 1px solid var(--border-light);
   box-shadow: var(--shadow);
   padding: 20px;
-  animation: popIn 0.4s ease both;
-}
-
-.side-card:nth-child(1) { animation-delay: 0.15s; }
-.side-card:nth-child(2) { animation-delay: 0.25s; }
-.side-card:nth-child(3) { animation-delay: 0.35s; }
-
-.side-title {
-  font-family: 'Caveat', cursive;
-  font-size: 19px;
-  font-weight: 700;
-  margin-bottom: 14px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-/* ═══ COMMUTES ═══ */
-.commute {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 0;
-  border-bottom: 1px dashed var(--border);
-}
-
-.commute:last-child { border: none; }
-
-.commute-icon {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  background: var(--depl-light);
-  flex-shrink: 0;
-}
-
-.commute-info { flex: 1; }
-
-.commute-route {
-  font-size: 13px;
-  font-weight: 600;
-}
-
-.commute-how {
-  font-size: 11px;
-  color: var(--text-muted);
-}
-
-.commute-dur {
-  font-family: 'Caveat', cursive;
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--depl);
-}
-
-/* ═══ TO-DOS ═══ */
-.todo {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  padding: 9px 0;
-  border-bottom: 1px dashed var(--border);
-  cursor: pointer;
-  transition: opacity 0.3s;
-}
-
-.todo:last-child { border: none; }
-
-.todo.done { opacity: 0.45; }
-
-.todo-dot {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  border: 2px solid var(--border);
-  flex-shrink: 0;
-  margin-top: 1px;
-  transition: all 0.3s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 11px;
-}
-
-.todo.done .todo-dot {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: white;
-}
-
-.todo-label {
-  font-size: 13px;
-  line-height: 1.4;
-}
-
-.todo.done .todo-label {
-  text-decoration: line-through;
-  color: var(--text-muted);
-}
-
-.todo-tag {
-  display: inline-block;
-  font-size: 10px;
-  padding: 2px 8px;
-  border-radius: 8px;
-  margin-top: 3px;
-  font-weight: 600;
-}
-
-.todo-tag.urgent { background: #fce8e8; color: var(--energy-low); }
-.todo-tag.pro-t { background: var(--pro-light); color: var(--pro); }
-.todo-tag.perso-t { background: var(--perso-light); color: var(--perso); }
-
-/* ═══ TIPS ═══ */
-.tip {
-  display: flex;
-  gap: 12px;
-  padding: 12px;
-  background: var(--accent-light);
-  border: 1px dashed var(--accent-border);
-  border-radius: var(--radius-sm);
-  margin-bottom: 8px;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.tip:last-child { margin-bottom: 0; }
-
-.tip:hover {
-  border-style: solid;
-  box-shadow: 0 2px 12px rgba(232, 152, 90, 0.12);
-}
-
-.tip.applied {
-  background: var(--depl-light);
-  border-color: var(--depl-border);
-}
-
-.tip-icon {
-  font-size: 20px;
-  flex-shrink: 0;
-}
-
-.tip-text {
-  font-size: 13px;
-  line-height: 1.5;
-  color: var(--text-soft);
-}
-
-.tip-text strong {
-  display: block;
-  color: var(--text);
-  font-size: 13px;
-  margin-bottom: 2px;
-}
-
-.tip.applied .tip-text strong {
-  color: var(--depl);
-}
-
-/* ═══ LEGEND ═══ */
-.legend {
-  display: flex;
-  gap: 16px;
-  margin-bottom: 14px;
-  flex-wrap: wrap;
-}
-
-.legend-item {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 12px;
-  color: var(--text-soft);
-  font-weight: 600;
-}
-
-.legend-pip {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-}
-
-/* ═══ MODAL ═══ */
-.modal-bg {
-  position: fixed;
-  inset: 0;
-  background: rgba(58, 53, 48, 0.3);
-  backdrop-filter: blur(6px);
-  z-index: 200;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s;
-}
-
-.modal-bg.open { opacity: 1; pointer-events: all; }
-
-.modal-box {
-  background: var(--surface);
-  border-radius: 20px;
-  padding: 28px;
-  width: 90%;
-  max-width: 400px;
-  box-shadow: 0 12px 40px rgba(58,53,48,0.15);
-  transform: translateY(16px);
-  transition: transform 0.3s;
-}
-
-.modal-bg.open .modal-box { transform: translateY(0); }
-
-.modal-box h3 {
-  font-family: 'Caveat', cursive;
-  font-size: 24px;
   margin-bottom: 16px;
 }
 
-.modal-row {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px 0;
-  border-bottom: 1px dashed var(--border);
-  font-size: 14px;
+.brain-textarea {
+  width: 100%;
+  min-height: 120px;
+  border: none;
+  outline: none;
+  font-family: 'Nunito', sans-serif;
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text);
+  resize: vertical;
+  background: transparent;
 }
 
-.modal-row:last-of-type { border: none; }
+.brain-textarea::placeholder {
+  color: var(--text-muted);
+  font-style: italic;
+}
 
-.modal-row .lbl { color: var(--text-muted); font-size: 12px; }
+.brain-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--border);
+}
 
-.modal-close-btn {
-  margin-top: 18px;
-  width: 100%;
-  padding: 12px;
+.brain-tag {
+  padding: 6px 14px;
   border-radius: 50px;
-  border: none;
-  background: var(--bg-warm);
-  color: var(--text);
-  font-family: inherit;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s;
+  border: 1px dashed;
+  transition: all 0.2s;
+  opacity: 0.7;
 }
 
-.modal-close-btn:hover { background: var(--border); }
+.brain-tag:hover { opacity: 1; transform: scale(1.05); }
+.brain-tag.added { opacity: 1; border-style: solid; }
+
+.brain-tag.pro { background: var(--pro-light); border-color: var(--pro); color: var(--pro); }
+.brain-tag.perso { background: var(--perso-light); border-color: var(--perso); color: var(--perso); }
+
+.quick-items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.quick-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: var(--bg);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  animation: fadeUp 0.3s ease;
+  border: 1px solid var(--border-light);
+}
+
+.quick-item .qi-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.quick-item .qi-icon.pro { background: var(--pro-light); }
+.quick-item .qi-icon.perso { background: var(--perso-light); }
+
+.quick-item .qi-text { flex: 1; font-weight: 500; }
+
+.quick-item .qi-remove {
+  cursor: pointer;
+  color: var(--text-muted);
+  font-size: 16px;
+  transition: color 0.2s;
+}
+.quick-item .qi-remove:hover { color: var(--energy-low); }
+
+/* ═══ SOURCE CARDS ═══ */
+.sources-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.source-card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  border: 2px dashed var(--border);
+  padding: 24px 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.source-card:hover {
+  border-color: var(--accent);
+  background: var(--accent-light);
+  transform: translateY(-2px);
+}
+
+.source-card.connected {
+  border-style: solid;
+  border-color: var(--energy-high);
+  background: var(--depl-light);
+}
+
+.source-icon {
+  font-size: 32px;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.source-name {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+
+.source-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.source-card.connected .source-desc {
+  color: var(--energy-high);
+  font-weight: 600;
+}
+
+.source-count {
+  display: inline-block;
+  margin-top: 8px;
+  background: var(--energy-high);
+  color: white;
+  border-radius: 50px;
+  padding: 3px 12px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* ═══ PHOTO CAPTURE ═══ */
+.photo-zone {
+  background: var(--surface);
+  border: 2px dashed var(--border);
+  border-radius: var(--radius);
+  padding: 40px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-bottom: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.photo-zone:hover {
+  border-color: var(--accent);
+  background: var(--accent-light);
+}
+
+.photo-zone.has-photo {
+  border-style: solid;
+  border-color: var(--energy-high);
+  padding: 16px;
+}
+
+.photo-zone-icon {
+  font-size: 40px;
+  margin-bottom: 12px;
+}
+
+.photo-zone-text {
+  font-size: 14px;
+  color: var(--text-soft);
+  font-weight: 600;
+}
+
+.photo-zone-hint {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 6px;
+}
+
+.photo-preview {
+  display: none;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.photo-zone.has-photo .photo-preview { display: flex; }
+.photo-zone.has-photo .photo-zone-icon,
+.photo-zone.has-photo .photo-zone-text,
+.photo-zone.has-photo .photo-zone-hint { display: none; }
+
+.photo-thumb {
+  width: 100px;
+  height: 80px;
+  border-radius: 10px;
+  object-fit: cover;
+  background: var(--bg-warm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  border: 1px solid var(--border);
+  position: relative;
+}
+
+.photo-thumb .analyzed {
+  position: absolute;
+  bottom: -4px;
+  right: -4px;
+  background: var(--energy-high);
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+}
+
+.photo-items-found {
+  width: 100%;
+  text-align: center;
+  font-size: 13px;
+  color: var(--energy-high);
+  font-weight: 600;
+  margin-top: 8px;
+}
+
+/* ═══ SYNTHESIS ═══ */
+.synth-loading {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.synth-spinner {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 4px solid var(--border);
+  border-top-color: var(--accent);
+  animation: spin 1s linear infinite;
+  margin: 0 auto 20px;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.synth-loading-text {
+  font-size: 15px;
+  color: var(--text-soft);
+  line-height: 1.6;
+}
+
+.synth-loading-text strong {
+  display: block;
+  font-family: 'Caveat', cursive;
+  font-size: 22px;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+/* ═══ RESULT ═══ */
+.result-card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow);
+  padding: 20px;
+  margin-bottom: 14px;
+  transition: all 0.3s;
+}
+
+.result-card:hover {
+  box-shadow: 0 4px 20px rgba(58,53,48,0.1);
+}
+
+.result-day-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.result-day-name {
+  font-family: 'Caveat', cursive;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.result-energy-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 50px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.result-events {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.result-ev {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  border-left: 3px solid;
+}
+
+.result-ev.pro { background: var(--pro-light); border-color: var(--pro); }
+.result-ev.perso { background: var(--perso-light); border-color: var(--perso); }
+.result-ev.depl { background: var(--depl-light); border-color: var(--depl); }
+
+.result-ev-time {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  min-width: 40px;
+}
+
+.result-ev-name {
+  font-weight: 600;
+  flex: 1;
+}
+
+.result-ev-source {
+  font-size: 10px;
+  color: var(--text-muted);
+  background: var(--bg);
+  padding: 2px 8px;
+  border-radius: 8px;
+}
+
+/* ═══ ALERT CARD ═══ */
+.alert-card {
+  background: var(--accent-light);
+  border: 1px dashed var(--accent-border);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  margin-bottom: 14px;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.alert-card:hover {
+  border-style: solid;
+  box-shadow: 0 2px 12px rgba(232,152,90,0.12);
+}
+
+.alert-card.resolved {
+  background: var(--depl-light);
+  border-color: var(--depl);
+}
+
+.alert-icon { font-size: 22px; flex-shrink: 0; margin-top: 2px; }
+.alert-body { flex: 1; }
+
+.alert-title {
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.alert-desc {
+  font-size: 13px;
+  color: var(--text-soft);
+  line-height: 1.5;
+}
+
+.alert-card.resolved .alert-title { color: var(--depl); }
+
+/* ═══ BUTTONS ═══ */
+.btn-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.btn {
+  flex: 1;
+  padding: 14px 20px;
+  border-radius: 50px;
+  border: none;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: white;
+  box-shadow: 0 4px 16px rgba(232,152,90,0.3);
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(232,152,90,0.4);
+}
+
+.btn-secondary {
+  background: var(--bg-warm);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+.btn-secondary:hover { background: var(--border); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+.btn-ghost:hover { color: var(--text); }
+
+/* ═══ SUMMARY BAR ═══ */
+.summary-bar {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.summary-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 50px;
+  font-size: 13px;
+  font-weight: 600;
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+}
+
+.summary-chip .chip-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
 
 /* ═══ FOOTER ═══ */
-.hack-tag {
+.footer-tag {
   text-align: center;
-  padding: 20px;
+  padding: 24px;
   font-size: 13px;
   color: var(--text-muted);
 }
 
-.hack-tag span {
+.footer-tag span {
   font-family: 'Caveat', cursive;
   font-weight: 700;
   font-size: 16px;
@@ -750,358 +674,471 @@ body {
 }
 
 /* ═══ RESPONSIVE ═══ */
-@media (max-width: 1100px) {
-  .week-section {
-    grid-template-columns: 1fr;
-  }
-  .sidebar {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 12px;
-  }
-}
-
-@media (max-width: 768px) {
-  .app-content { padding: 16px; }
-  .week-grid {
-    grid-template-columns: repeat(7, 1fr);
-    overflow-x: auto;
-  }
-  .day-card { min-width: 125px; }
-  .sidebar {
-    grid-template-columns: 1fr;
-  }
-  .mood-card { flex-direction: column; align-items: flex-start; }
-  .energy-bubbles { overflow-x: auto; }
-  .energy-bubble { min-width: 58px; }
-  .header-greeting { display: none; }
+@media (max-width: 500px) {
+  .sources-grid { grid-template-columns: 1fr; }
+  .container { padding: 16px; }
+  .step-title { font-size: 26px; }
 }
 </style>
 </head>
 <body>
 
-<!-- ONBOARDING -->
-<div class="onboarding" id="onboarding">
-  <div class="onboarding-emoji">🗓️</div>
-  <h1>Week<span>Hack</span></h1>
-  <p>Pose tout ce que tu as en tête.<br>Visualise ta semaine. Reprends le contrôle.<br>En 5 minutes, c'est calé.</p>
-  <button class="btn-start" onclick="startApp()">C'est parti →</button>
-  <div class="onboarding-note">Tes données restent chez toi. Rien ne sort.</div>
-</div>
-
-<!-- MODAL -->
-<div class="modal-bg" id="modal" onclick="if(event.target===this)this.classList.remove('open')">
-  <div class="modal-box">
-    <h3 id="modal-title"></h3>
-    <div id="modal-body"></div>
-    <button class="modal-close-btn" onclick="document.getElementById('modal').classList.remove('open')">Fermer</button>
-  </div>
-</div>
-
-<!-- HEADER -->
-<div class="header">
+<!-- TOP BAR -->
+<div class="topbar">
   <div class="logo">
-    <div class="logo-icon">📋</div>
+    <div class="logo-emoji">📋</div>
     <div class="logo-text">Week<span>Hack</span></div>
   </div>
-  <div class="header-right">
-    <div class="header-greeting">Bonsoir <strong>Benjamin</strong> 👋</div>
-    <div class="avatar">🧑</div>
+  <div class="timer-pill">
+    <div class="dot"></div>
+    <span id="timerText">5:00</span>
   </div>
 </div>
 
-<!-- CONTENT -->
-<div class="app-content">
+<!-- PROGRESS -->
+<div class="progress-wrap">
+  <div class="progress-steps" id="progressSteps">
+    <div class="progress-step active"></div>
+    <div class="progress-step"></div>
+    <div class="progress-step"></div>
+    <div class="progress-step"></div>
+    <div class="progress-step"></div>
+  </div>
+  <div class="progress-label">
+    <span>🧠 En tête</span>
+    <span>📱 Outils</span>
+    <span>📸 Papier</span>
+    <span>🤖 Synthèse</span>
+    <span>✅ Ma semaine</span>
+  </div>
+</div>
 
-  <!-- MOOD CARD -->
-  <div class="mood-card">
-    <div class="mood-left">
-      <h2>Dimanche soir, on pose tout 🧘</h2>
-      <p>Ta semaine du 9 au 15 mars est chargée mais gérable. 14 événements pro, 11 perso, 2 déplacements. On regarde ça ensemble ?</p>
+<!-- CONTAINER -->
+<div class="container">
+
+  <!-- ═══ STEP 1 : BRAIN DUMP ═══ -->
+  <div class="step active" id="step1">
+    <div class="step-header">
+      <span class="step-emoji">🧠</span>
+      <div class="step-title">Qu'est-ce que t'as en tête ?</div>
+      <div class="step-subtitle">Vide ton cerveau. Tout ce qui te vient pour la semaine — pro, perso, trucs à pas oublier. En vrac, c'est le but.</div>
     </div>
-    <div class="mood-energy">
-      <div class="mood-battery">
-        <div class="mood-battery-fill" id="batteryFill" style="width:68%;background:var(--accent);"></div>
+
+    <div class="brain-dump">
+      <textarea class="brain-textarea" id="brainInput" placeholder="Ex : faut que j'appelle le plombier, présentation jeudi à préparer, récup enfants mercredi, penser au cadeau d'anniv de Julie..."></textarea>
+      <div class="brain-tags">
+        <div class="brain-tag pro" onclick="addQuickItem('Préparer la présentation jeudi', 'pro', this)">💼 Présentation jeudi</div>
+        <div class="brain-tag perso" onclick="addQuickItem('Rappeler le plombier', 'perso', this)">🏠 Plombier</div>
+        <div class="brain-tag perso" onclick="addQuickItem('Cadeau anniv Julie', 'perso', this)">🎁 Anniv Julie</div>
+        <div class="brain-tag pro" onclick="addQuickItem('Envoyer CR réunion vendredi', 'pro', this)">📧 CR réunion</div>
+        <div class="brain-tag perso" onclick="addQuickItem('Rdv médecin à caler', 'perso', this)">🩺 Rdv médecin</div>
       </div>
-      <div class="mood-battery-text">Énergie semaine : 68%</div>
+      <div class="quick-items" id="quickItems"></div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-ghost" onclick="goStep(2)">Passer →</button>
+      <button class="btn btn-primary" onclick="goStep(2)">Ok, j'ai vidé ma tête ✓</button>
     </div>
   </div>
 
-  <!-- ENERGY BUBBLES -->
-  <div class="energy-section">
-    <div class="section-label">⚡ Comment tu te sens cette semaine ?</div>
-    <div class="energy-bubbles" id="energyBubbles"></div>
+  <!-- ═══ STEP 2 : CONNECT SOURCES ═══ -->
+  <div class="step" id="step2">
+    <div class="step-header">
+      <span class="step-emoji">📱</span>
+      <div class="step-title">On va chercher dans tes outils</div>
+      <div class="step-subtitle">Connecte ce que tu utilises. On récupère tes événements et to-do de la semaine automatiquement.</div>
+    </div>
+
+    <div class="sources-grid">
+      <div class="source-card" onclick="connectSource(this, 'Outlook', 8)">
+        <span class="source-icon">📧</span>
+        <div class="source-name">Outlook</div>
+        <div class="source-desc">Agenda pro & mails</div>
+      </div>
+      <div class="source-card" onclick="connectSource(this, 'Gmail', 5)">
+        <span class="source-icon">📬</span>
+        <div class="source-name">Gmail</div>
+        <div class="source-desc">Agenda perso & rappels</div>
+      </div>
+      <div class="source-card" onclick="connectSource(this, 'Todoist', 6)">
+        <span class="source-icon">✅</span>
+        <div class="source-name">Todoist</div>
+        <div class="source-desc">Mes tâches en cours</div>
+      </div>
+      <div class="source-card" onclick="connectSource(this, 'Notes', 3)">
+        <span class="source-icon">📝</span>
+        <div class="source-name">Notes / Notion</div>
+        <div class="source-desc">Mes notes en vrac</div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goStep(1)">← Retour</button>
+      <button class="btn btn-primary" onclick="goStep(3)">Continuer →</button>
+    </div>
   </div>
 
-  <!-- LEGEND -->
-  <div class="legend">
-    <div class="legend-item"><div class="legend-pip" style="background:var(--pro)"></div> Boulot</div>
-    <div class="legend-item"><div class="legend-pip" style="background:var(--perso)"></div> Perso</div>
-    <div class="legend-item"><div class="legend-pip" style="background:var(--depl)"></div> Trajet</div>
+  <!-- ═══ STEP 3 : PHOTO CAPTURE ═══ -->
+  <div class="step" id="step3">
+    <div class="step-header">
+      <span class="step-emoji">📸</span>
+      <div class="step-title">T'as des trucs sur papier ?</div>
+      <div class="step-subtitle">Planning affiché au frigo, tableau au bureau, post-it sur l'écran… Prends en photo, on analyse.</div>
+    </div>
+
+    <div class="photo-zone" id="photoZone" onclick="simulatePhoto()">
+      <div class="photo-zone-icon">📷</div>
+      <div class="photo-zone-text">Appuie pour prendre une photo</div>
+      <div class="photo-zone-hint">ou glisse une image ici</div>
+      <div class="photo-preview" id="photoPreview"></div>
+    </div>
+
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;">
+      <div style="padding:8px 14px;border-radius:50px;background:var(--bg-warm);border:1px dashed var(--border);font-size:13px;cursor:pointer;transition:all 0.2s;" onclick="addPhotoExample('🗓️','Planning du frigo')" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">🗓️ Planning du frigo</div>
+      <div style="padding:8px 14px;border-radius:50px;background:var(--bg-warm);border:1px dashed var(--border);font-size:13px;cursor:pointer;transition:all 0.2s;" onclick="addPhotoExample('📋','Tableau blanc bureau')" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">📋 Tableau blanc bureau</div>
+      <div style="padding:8px 14px;border-radius:50px;background:var(--bg-warm);border:1px dashed var(--border);font-size:13px;cursor:pointer;transition:all 0.2s;" onclick="addPhotoExample('📌','Post-it écran')" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">📌 Post-it sur l'écran</div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goStep(2)">← Retour</button>
+      <button class="btn btn-ghost" onclick="goStep(4)">Rien sur papier →</button>
+      <button class="btn btn-primary" onclick="goStep(4)">C'est bon, on analyse →</button>
+    </div>
   </div>
 
-  <!-- WEEK + SIDEBAR -->
-  <div class="week-section">
-    <div class="week-grid" id="weekGrid"></div>
+  <!-- ═══ STEP 4 : SYNTHESIS (loading) ═══ -->
+  <div class="step" id="step4">
+    <div class="synth-loading" id="synthLoading">
+      <div class="synth-spinner"></div>
+      <div class="synth-loading-text">
+        <strong>Je compile tout ça…</strong>
+        <span id="synthStatus">Lecture de tes notes en tête…</span>
+      </div>
+    </div>
+  </div>
 
-    <div class="sidebar">
+  <!-- ═══ STEP 5 : RESULT ═══ -->
+  <div class="step" id="step5">
+    <div class="step-header">
+      <span class="step-emoji">✅</span>
+      <div class="step-title">Ta semaine est prête, Benjamin</div>
+      <div class="step-subtitle">Voilà tout ce qu'on a trouvé, trié par jour. Les alertes sont en haut — c'est là que tu peux agir.</div>
+    </div>
 
-      <!-- TRAJETS -->
-      <div class="side-card">
-        <div class="side-title">🚶 Mes trajets lundi</div>
-        <div id="commutes">
-          <div class="commute">
-            <div class="commute-icon">🏠</div>
-            <div class="commute-info">
-              <div class="commute-route">Maison → Bureau</div>
-              <div class="commute-how">Tram L1 + marche</div>
-            </div>
-            <div class="commute-dur">38'</div>
-          </div>
-          <div class="commute">
-            <div class="commute-icon">🏢</div>
-            <div class="commute-info">
-              <div class="commute-route">Bureau → École</div>
-              <div class="commute-how">Vélo</div>
-            </div>
-            <div class="commute-dur">12'</div>
-          </div>
-          <div class="commute">
-            <div class="commute-icon">🎒</div>
-            <div class="commute-info">
-              <div class="commute-route">École → Maison</div>
-              <div class="commute-how">À pied avec les enfants</div>
-            </div>
-            <div class="commute-dur">18'</div>
-          </div>
+    <!-- SUMMARY BAR -->
+    <div class="summary-bar">
+      <div class="summary-chip"><div class="chip-dot" style="background:var(--pro)"></div> 12 pro</div>
+      <div class="summary-chip"><div class="chip-dot" style="background:var(--perso)"></div> 9 perso</div>
+      <div class="summary-chip"><div class="chip-dot" style="background:var(--depl)"></div> 2 trajets</div>
+      <div class="summary-chip">🧠 4 de ta tête</div>
+      <div class="summary-chip">📸 3 du papier</div>
+    </div>
+
+    <!-- ALERTS -->
+    <div id="alerts">
+      <div class="alert-card" onclick="resolveAlert(this)">
+        <div class="alert-icon">⚠️</div>
+        <div class="alert-body">
+          <div class="alert-title">Mercredi surchargé</div>
+          <div class="alert-desc">Rennes A/R + 1-1 + crêpes le soir. Ton énergie sera basse. Décaler le 1-1 à jeudi matin ?</div>
         </div>
       </div>
-
-      <!-- TO-DO -->
-      <div class="side-card">
-        <div class="side-title">✏️ Ma to-do</div>
-        <div id="todoList"></div>
-      </div>
-
-      <!-- TIPS -->
-      <div class="side-card">
-        <div class="side-title">💡 Petits conseils</div>
-        <div id="tips">
-          <div class="tip" onclick="applyTip(this)">
-            <div class="tip-icon">🔄</div>
-            <div class="tip-text">
-              <strong>Ton 1-1 de mercredi 14h ?</strong>
-              T'es dans le creux ce jour-là. Décale-le à 10h30, tu seras plus frais.
-            </div>
-          </div>
-          <div class="tip" onclick="applyTip(this)">
-            <div class="tip-icon">🧘</div>
-            <div class="tip-text">
-              <strong>Mardi matin est libre</strong>
-              Parfait pour avancer au calme sur le dossier Palmes.
-            </div>
-          </div>
-          <div class="tip" onclick="applyTip(this)">
-            <div class="tip-icon">🏃</div>
-            <div class="tip-text">
-              <strong>Jeudi soir est léger</strong>
-              Tu pourrais caler ta sortie running à 18h30.
-            </div>
-          </div>
+      <div class="alert-card" onclick="resolveAlert(this)">
+        <div class="alert-icon">📸</div>
+        <div class="alert-body">
+          <div class="alert-title">Vu sur le planning du frigo</div>
+          <div class="alert-desc">« Rdv dentiste Timéo mardi 17h » — pas dans ton agenda. On l'ajoute ?</div>
         </div>
       </div>
+      <div class="alert-card" onclick="resolveAlert(this)">
+        <div class="alert-icon">🧠</div>
+        <div class="alert-body">
+          <div class="alert-title">Tu avais en tête : cadeau anniv Julie</div>
+          <div class="alert-desc">L'anniv est samedi. Créneau libre jeudi midi pour passer en boutique ?</div>
+        </div>
+      </div>
+    </div>
 
+    <!-- DAYS -->
+    <div id="resultDays"></div>
+
+    <div class="btn-row" style="margin-top:24px;">
+      <button class="btn btn-secondary" onclick="goStep(1)">↺ Recommencer</button>
+      <button class="btn btn-primary" onclick="exportResult()">Exporter mon planning 📤</button>
     </div>
   </div>
 
 </div>
 
 <!-- FOOTER -->
-<div class="hack-tag">🎙️ Concept pitché par Benjamin — <span>(Cr)Hack!</span></div>
+<div class="footer-tag">🎙️ Concept pitché par Benjamin — <span>(Cr)Hack!</span></div>
 
 <script>
 // ═══════════════════════════════════
-// DATA
+// STATE
 // ═══════════════════════════════════
+let currentStep = 1;
+let quickItems = [];
+let photos = [];
+let timerInterval;
+let timerSeconds = 300;
 
-const DAYS = [
-  { dow: 'Lun', date: 9, energy: 72, face: '😊', today: true },
-  { dow: 'Mar', date: 10, energy: 85, face: '😄' },
-  { dow: 'Mer', date: 11, energy: 42, face: '😮‍💨' },
-  { dow: 'Jeu', date: 12, energy: 68, face: '🙂' },
-  { dow: 'Ven', date: 13, energy: 55, face: '😐' },
-  { dow: 'Sam', date: 14, energy: 90, face: '😎' },
-  { dow: 'Dim', date: 15, energy: 80, face: '🤗' }
+// ═══════════════════════════════════
+// RESULT DATA
+// ═══════════════════════════════════
+const RESULT_DAYS = [
+  {
+    name: 'Lundi 9', energy: 72, face: '😊',
+    events: [
+      { time: '8h30', name: 'Stand-up Innovation', type: 'pro', src: 'Outlook' },
+      { time: '9h30', name: 'Atelier IA — HandiCap\'Anjou', type: 'pro', src: 'Outlook' },
+      { time: '12h00', name: 'Déj avec Julien', type: 'perso', src: 'Gmail' },
+      { time: '14h00', name: 'COPIL CadrageExpress', type: 'pro', src: 'Outlook' },
+      { time: '16h30', name: 'Récup enfants', type: 'perso', src: '📸 Frigo' },
+    ]
+  },
+  {
+    name: 'Mardi 10', energy: 85, face: '😄',
+    events: [
+      { time: '9h00', name: 'Focus — Dossier Palmes', type: 'pro', src: '🧠 En tête' },
+      { time: '11h00', name: 'Call startup LogiTrack', type: 'pro', src: 'Outlook' },
+      { time: '14h00', name: 'Rédac post LinkedIn', type: 'pro', src: 'Todoist' },
+      { time: '17h00', name: 'Rdv dentiste Timéo', type: 'perso', src: '📸 Frigo' },
+    ]
+  },
+  {
+    name: 'Mercredi 11', energy: 42, face: '😮‍💨',
+    events: [
+      { time: '8h30', name: 'Train → Rennes', type: 'depl', src: 'Outlook' },
+      { time: '10h30', name: 'Imagine Summit', type: 'pro', src: 'Outlook' },
+      { time: '16h30', name: 'Retour Nantes', type: 'depl', src: 'Outlook' },
+      { time: '19h00', name: 'Crêpes en famille', type: 'perso', src: 'Gmail' },
+    ]
+  },
+  {
+    name: 'Jeudi 12', energy: 68, face: '🙂',
+    events: [
+      { time: '9h00', name: 'Revue Power BI', type: 'pro', src: 'Outlook' },
+      { time: '10h00', name: '1-1 Manager (décalé de mer.)', type: 'pro', src: '💡 Suggestion' },
+      { time: '12h30', name: 'Acheter cadeau Julie', type: 'perso', src: '🧠 En tête' },
+      { time: '15h00', name: 'Enregistrement (Cr)Hack!', type: 'pro', src: 'Outlook' },
+      { time: '18h30', name: 'Fractionné 10×400m', type: 'perso', src: 'Gmail' },
+    ]
+  },
+  {
+    name: 'Vendredi 13', energy: 55, face: '😐',
+    events: [
+      { time: '9h00', name: 'Sprint review', type: 'pro', src: 'Outlook' },
+      { time: '11h00', name: 'Démo EthiQuête', type: 'pro', src: 'Outlook' },
+      { time: '14h00', name: 'Rétro équipe', type: 'pro', src: 'Outlook' },
+      { time: '17h00', name: 'Appeler le plombier', type: 'perso', src: '🧠 En tête' },
+      { time: '17h30', name: 'Apéro équipe', type: 'perso', src: 'Outlook' },
+    ]
+  },
+  {
+    name: 'Samedi 14', energy: 90, face: '😎',
+    events: [
+      { time: '8h30', name: 'Parkrun 5 km', type: 'perso', src: 'Gmail' },
+      { time: '10h00', name: 'Marché Talensac', type: 'perso', src: '📸 Frigo' },
+      { time: '18h00', name: '🎂 Anniv Julie !', type: 'perso', src: '🧠 En tête' },
+    ]
+  },
+  {
+    name: 'Dimanche 15', energy: 80, face: '🤗',
+    events: [
+      { time: '11h00', name: 'Machines de l\'île en famille', type: 'perso', src: 'Gmail' },
+      { time: '17h00', name: 'Sortie longue 1h30', type: 'perso', src: 'Gmail' },
+    ]
+  }
 ];
 
-const EVENTS = {
-  9: [
-    { time: '8h30', name: 'Stand-up Innovation', type: 'pro', loc: 'Teams' },
-    { time: '9h30', name: 'Atelier IA — HandiCap\'Anjou', type: 'pro', loc: '574 Nantes' },
-    { time: '12h00', name: 'Déj avec Julien', type: 'perso' },
-    { time: '14h00', name: 'COPIL CadrageExpress', type: 'pro', loc: 'Salle Verne' },
-    { time: '16h30', name: 'Récup enfants', type: 'perso', loc: 'École' },
-  ],
-  10: [
-    { time: '9h00', name: 'Focus — Dossier Palmes', type: 'pro', loc: 'Bureau' },
-    { time: '11h00', name: 'Call startup LogiTrack', type: 'pro', loc: 'Teams' },
-    { time: '14h00', name: 'Rédac post LinkedIn', type: 'pro' },
-    { time: '17h00', name: 'Courses', type: 'perso' },
-  ],
-  11: [
-    { time: '8h30', name: 'Train → Rennes', type: 'depl', loc: 'TER · 1h15' },
-    { time: '10h30', name: 'Imagine Summit', type: 'pro', loc: 'Rennes' },
-    { time: '14h00', name: '1-1 Manager', type: 'pro', loc: 'Teams' },
-    { time: '16h30', name: 'Retour Nantes', type: 'depl', loc: 'TER · 1h15' },
-    { time: '19h00', name: 'Crêpes en famille', type: 'perso' },
-  ],
-  12: [
-    { time: '9h00', name: 'Revue Power BI', type: 'pro', loc: '574' },
-    { time: '10h30', name: 'Keynote interne', type: 'pro', loc: '574' },
-    { time: '13h00', name: 'Run récup 40 min', type: 'perso', loc: 'Erdre' },
-    { time: '15h00', name: 'Enregistrement (Cr)Hack!', type: 'pro', loc: 'Studio' },
-    { time: '18h30', name: 'Fractionné 10×400m', type: 'perso', loc: 'Stade' },
-  ],
-  13: [
-    { time: '9h00', name: 'Sprint review', type: 'pro', loc: 'Teams' },
-    { time: '11h00', name: 'Démo EthiQuête', type: 'pro', loc: '574' },
-    { time: '14h00', name: 'Rétro équipe', type: 'pro', loc: 'Salle Nemo' },
-    { time: '17h30', name: 'Apéro équipe', type: 'perso', loc: 'Lieu Unique' },
-  ],
-  14: [
-    { time: '8h30', name: 'Parkrun 5 km', type: 'perso', loc: 'Parc de Procé' },
-    { time: '10h00', name: 'Marché Talensac', type: 'perso' },
-    { time: '14h00', name: 'Bricolage', type: 'perso' },
-    { time: '18h00', name: 'Pizza entre amis', type: 'perso' },
-  ],
-  15: [
-    { time: '9h00', name: 'Grasse mat\' ☕', type: 'perso' },
-    { time: '11h00', name: 'Machines de l\'île', type: 'perso', loc: 'Île de Nantes' },
-    { time: '15h00', name: 'Prépa semaine', type: 'pro' },
-    { time: '17h00', name: 'Sortie longue 1h30', type: 'perso', loc: 'Bords de Loire' },
-  ]
-};
+// ═══════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════
+function goStep(n) {
+  document.getElementById('step' + currentStep).classList.remove('active');
+  currentStep = n;
+  document.getElementById('step' + n).classList.add('active');
 
-const TODOS = [
-  { text: 'Finaliser slides Palmes du Sport', tag: 'urgent', done: false },
-  { text: 'Relire brief TC\'Auto pour jeudi', tag: 'pro', done: false },
-  { text: 'Mail parents d\'élèves — conseil école', tag: 'perso', done: false },
-  { text: 'Publier Mercred\'inno LinkedIn', tag: 'pro', done: false },
-  { text: 'Commander dossards Challenge Connecté', tag: 'perso', done: true },
-];
+  // Update progress
+  document.querySelectorAll('.progress-step').forEach((s, i) => {
+    s.className = 'progress-step';
+    if (i < n - 1) s.classList.add('done');
+    if (i === n - 1) s.classList.add('active');
+  });
+
+  // Step 4: run synthesis animation
+  if (n === 4) runSynthesis();
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 
 // ═══════════════════════════════════
-// RENDER
+// STEP 1 — BRAIN DUMP
 // ═══════════════════════════════════
+function addQuickItem(text, type, tagEl) {
+  if (tagEl) {
+    tagEl.classList.add('added');
+    tagEl.style.pointerEvents = 'none';
+  }
+  quickItems.push({ text, type });
+  renderQuickItems();
+}
 
+function removeQuickItem(i) {
+  quickItems.splice(i, 1);
+  renderQuickItems();
+}
+
+function renderQuickItems() {
+  document.getElementById('quickItems').innerHTML = quickItems.map((q, i) => `
+    <div class="quick-item">
+      <div class="qi-icon ${q.type}">${q.type === 'pro' ? '💼' : '🏠'}</div>
+      <div class="qi-text">${q.text}</div>
+      <div class="qi-remove" onclick="removeQuickItem(${i})">×</div>
+    </div>
+  `).join('');
+}
+
+// ═══════════════════════════════════
+// STEP 2 — SOURCES
+// ═══════════════════════════════════
+function connectSource(card, name, count) {
+  if (card.classList.contains('connected')) return;
+  card.style.opacity = '0.6';
+  card.querySelector('.source-desc').textContent = 'Connexion…';
+
+  setTimeout(() => {
+    card.classList.add('connected');
+    card.style.opacity = '1';
+    card.querySelector('.source-desc').textContent = '✓ Connecté';
+    card.innerHTML += `<div class="source-count">${count} éléments trouvés</div>`;
+  }, 800 + Math.random() * 600);
+}
+
+// ═══════════════════════════════════
+// STEP 3 — PHOTOS
+// ═══════════════════════════════════
+function simulatePhoto() {
+  if (photos.length >= 3) return;
+  addPhotoExample('📷', 'Photo ' + (photos.length + 1));
+}
+
+function addPhotoExample(emoji, label) {
+  if (photos.length >= 3) return;
+  photos.push({ emoji, label });
+
+  const zone = document.getElementById('photoZone');
+  zone.classList.add('has-photo');
+  const preview = document.getElementById('photoPreview');
+
+  preview.innerHTML = photos.map(p => `
+    <div class="photo-thumb">
+      ${p.emoji}
+      <div class="analyzed">✓</div>
+    </div>
+  `).join('');
+
+  const itemsText = [3, 5, 2];
+  const total = itemsText.slice(0, photos.length).reduce((a, b) => a + b, 0);
+  preview.innerHTML += `<div class="photo-items-found">📋 ${total} éléments détectés sur ${photos.length} photo(s)</div>`;
+}
+
+// ═══════════════════════════════════
+// STEP 4 — SYNTHESIS
+// ═══════════════════════════════════
+function runSynthesis() {
+  const status = document.getElementById('synthStatus');
+  const messages = [
+    'Lecture de tes notes en tête…',
+    'Import des événements Outlook (8 trouvés)…',
+    'Import Gmail & agenda perso (5 trouvés)…',
+    'Analyse des photos — planning du frigo…',
+    'Détection des conflits horaires…',
+    'Calcul de ton énergie prévisionnelle…',
+    'Préparation de tes suggestions…',
+    'C\'est prêt ! 🎉'
+  ];
+
+  let i = 0;
+  const interval = setInterval(() => {
+    i++;
+    if (i < messages.length) {
+      status.textContent = messages[i];
+    }
+    if (i >= messages.length) {
+      clearInterval(interval);
+      setTimeout(() => {
+        renderResult();
+        goStep(5);
+      }, 600);
+    }
+  }, 700);
+}
+
+// ═══════════════════════════════════
+// STEP 5 — RESULT
+// ═══════════════════════════════════
 function energyColor(v) {
   if (v >= 70) return 'var(--energy-high)';
   if (v >= 50) return 'var(--energy-mid)';
   return 'var(--energy-low)';
 }
 
-function renderEnergy() {
-  document.getElementById('energyBubbles').innerHTML = DAYS.map(d => `
-    <div class="energy-bubble ${d.today ? 'active' : ''}" onclick="showEnergy(${d.energy},'${d.dow}','${d.face}')">
-      <div class="bubble-day">${d.dow}</div>
-      <div class="bubble-circle" style="background:${energyColor(d.energy)}">${d.energy}</div>
-      <div class="bubble-face">${d.face}</div>
-      <div class="bubble-date">${d.date}${d.today ? '<span class="today-dot"></span>' : ''}</div>
+function renderResult() {
+  document.getElementById('resultDays').innerHTML = RESULT_DAYS.map(d => `
+    <div class="result-card">
+      <div class="result-day-head">
+        <div class="result-day-name">${d.face} ${d.name}</div>
+        <div class="result-energy-badge" style="background:${energyColor(d.energy)}20;color:${energyColor(d.energy)}">
+          ⚡ ${d.energy}%
+        </div>
+      </div>
+      <div class="result-events">
+        ${d.events.map(e => `
+          <div class="result-ev ${e.type}">
+            <div class="result-ev-time">${e.time}</div>
+            <div class="result-ev-name">${e.name}</div>
+            <div class="result-ev-source">${e.src}</div>
+          </div>
+        `).join('')}
+      </div>
     </div>
   `).join('');
 }
 
-function renderWeek() {
-  document.getElementById('weekGrid').innerHTML = DAYS.map(d => {
-    const evs = EVENTS[d.date] || [];
-    return `
-      <div class="day-card ${d.today ? 'today' : ''}">
-        <div class="day-card-head">
-          <div class="dow">${d.dow}</div>
-          <div class="num">${d.date}</div>
-        </div>
-        <div class="day-events">
-          ${evs.map(e => `
-            <div class="ev ${e.type}" onclick="showEvent('${e.time}','${e.name.replace(/'/g,"\\'")}','${e.type}','${(e.loc||'').replace(/'/g,"\\'")}','${d.dow} ${d.date} mars')">
-              <div class="ev-time">${e.time}</div>
-              <div class="ev-name">${e.name}</div>
-              ${e.loc ? `<div class="ev-loc">📍 ${e.loc}</div>` : ''}
-            </div>
-          `).join('')}
-        </div>
-      </div>
-    `;
-  }).join('');
-}
-
-function renderTodos() {
-  document.getElementById('todoList').innerHTML = TODOS.map((t, i) => {
-    const cls = t.tag === 'urgent' ? 'urgent' : t.tag === 'perso' ? 'perso-t' : 'pro-t';
-    const lbl = t.tag === 'urgent' ? '🔴 Urgent' : t.tag === 'perso' ? '🏠 Perso' : '💼 Pro';
-    return `
-      <div class="todo ${t.done ? 'done' : ''}" onclick="toggleTodo(${i})">
-        <div class="todo-dot">${t.done ? '✓' : ''}</div>
-        <div>
-          <div class="todo-label">${t.text}</div>
-          <div class="todo-tag ${cls}">${lbl}</div>
-        </div>
-      </div>
-    `;
-  }).join('');
-}
-
-// ═══════════════════════════════════
-// INTERACTIONS
-// ═══════════════════════════════════
-
-function startApp() {
-  document.getElementById('onboarding').classList.add('hidden');
-}
-
-function toggleTodo(i) {
-  TODOS[i].done = !TODOS[i].done;
-  renderTodos();
-}
-
-function showEvent(time, name, type, loc, day) {
-  const types = { pro: '💼 Boulot', perso: '🏠 Perso', depl: '🚆 Trajet' };
-  const m = document.getElementById('modal');
-  document.getElementById('modal-title').textContent = name;
-  document.getElementById('modal-body').innerHTML = `
-    <div class="modal-row"><span class="lbl">Quand</span><span>${day} · ${time}</span></div>
-    <div class="modal-row"><span class="lbl">Type</span><span>${types[type]}</span></div>
-    ${loc ? `<div class="modal-row"><span class="lbl">Où</span><span>📍 ${loc}</span></div>` : ''}
-  `;
-  m.classList.add('open');
-}
-
-function showEnergy(val, day, face) {
-  let conseil;
-  if (val >= 70) conseil = 'Bonne énergie ! Idéal pour les sujets de fond et les réunions importantes.';
-  else if (val >= 50) conseil = 'Énergie moyenne. Privilégie les tâches routinières et garde du repos.';
-  else conseil = 'Journée intense prévue. Évite d\'empiler les réunions, ménage-toi.';
-
-  const m = document.getElementById('modal');
-  document.getElementById('modal-title').textContent = `${face} ${day} — énergie`;
-  document.getElementById('modal-body').innerHTML = `
-    <div style="text-align:center;padding:12px 0;">
-      <div style="font-family:'Caveat',cursive;font-size:52px;font-weight:800;color:${energyColor(val)}">${val}%</div>
-      <div style="color:var(--text-soft);margin-top:10px;font-size:14px;line-height:1.6;">${conseil}</div>
-    </div>
-  `;
-  m.classList.add('open');
-}
-
-function applyTip(el) {
-  el.classList.add('applied');
-  el.querySelector('.tip-text strong').textContent = '✓ C\'est noté !';
+function resolveAlert(el) {
+  el.classList.add('resolved');
+  el.querySelector('.alert-icon').textContent = '✅';
+  el.querySelector('.alert-title').textContent = 'C\'est réglé !';
   el.style.pointerEvents = 'none';
 }
 
-// ═══ INIT ═══
-renderEnergy();
-renderWeek();
-renderTodos();
+function exportResult() {
+  const btn = event.target;
+  btn.textContent = '✓ Copié dans ton agenda !';
+  btn.style.background = 'var(--energy-high)';
+  setTimeout(() => {
+    btn.textContent = 'Exporter mon planning 📤';
+    btn.style.background = '';
+  }, 2500);
+}
+
+// ═══════════════════════════════════
+// TIMER
+// ═══════════════════════════════════
+function startTimer() {
+  timerInterval = setInterval(() => {
+    timerSeconds--;
+    if (timerSeconds <= 0) { clearInterval(timerInterval); timerSeconds = 0; }
+    const m = Math.floor(timerSeconds / 60);
+    const s = timerSeconds % 60;
+    document.getElementById('timerText').textContent = m + ':' + (s < 10 ? '0' : '') + s;
+  }, 1000);
+}
+
+startTimer();
 </script>
 </body>
 </html>
